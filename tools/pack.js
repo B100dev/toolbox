@@ -3,6 +3,7 @@ IB.register({
   id: "pack",
   name: "Pack & Runtime",
   nav: "Pack",
+  group: "Wiring and batteries",
   tag: "Batteries · sag · endurance",
   blurb: "Cells in series, a current draw, and the internal resistance nobody puts on the label. "
        + "Get the loaded voltage, the C-rate you are asking for, and how long it lasts.",

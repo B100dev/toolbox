@@ -1,17 +1,39 @@
 # Motor and circuit tools
 
-Seven small engineering tools on one static page: two live motor simulations and five calculators.
+Twelve small engineering tools on one static page: two live motor simulations and ten calculators.
 No build step, no dependencies, no server — plain HTML, CSS and JavaScript.
+
+**Motors and drives**
 
 | Tool | What it does |
 |---|---|
 | Brushless motor bench | Six-step BLDC commutation, live: rotating field, Hall sequence, trapezoidal drive, torque–speed curve, loss split |
 | Brushed motor bench | Commutator reversing the armature, plus the four classic performance curves |
+| Speed, torque & gearing | Reflects a load through a gearbox onto the motor's envelope; finds the ratio that maximises output speed |
+| Motor thermal limit | Winding temperature over time, continuous current rating, what duty cycling buys |
+
+**Power conversion**
+
+| Tool | What it does |
+|---|---|
+| LDO / linear regulator | Headroom vs dropout, dissipation, junction temperature, thermal current limit by package |
+| Buck converter | Duty, inductor ripple waveform, CCM/DCM boundary, output ripple, conduction loss budget |
+
+**Circuits**
+
+| Tool | What it does |
+|---|---|
 | RC / RL time constant | τ, rise and settling times, corner frequency, milestone table |
 | LC resonance & filter | f₀, Z₀, Q, bandwidth, Bode magnitude and the step response |
+| Voltage divider | Output, loading error, Thévenin impedance, nearest E24 pair |
+| Current-limiting resistor | Series resistor sizing, standard value, power rating, sensitivity to Vf spread |
+
+**Wiring and batteries**
+
+| Tool | What it does |
+|---|---|
 | Wire gauge & drop | AWG geometry, temperature-corrected resistance, voltage drop, copper heating |
 | Pack & runtime | Pack voltage, sag from internal resistance, C-rate, discharge curve |
-| Voltage divider | Output, loading error, Thévenin impedance, nearest E24 pair |
 
 ## Publishing on GitHub Pages
 
@@ -27,29 +49,34 @@ To serve it from a subfolder such as `docs/`, put these files there and pick `/d
 ## Files
 
 ```
-index.html        page shell, header, footer, script tags
-app.css           all styling, including the dark theme
-app.js            router, number formatting, form fields, the SVG chart renderer
-tools/motor.js    brushless motor simulation
-tools/brushed.js  brushed motor simulation
-tools/rc.js       RC / RL time constant
-tools/lc.js       LC resonance and filter
-tools/wire.js     wire gauge and voltage drop
-tools/pack.js     battery pack and runtime
-tools/divider.js  voltage divider
-.nojekyll         tells GitHub Pages to serve the files as-is
+index.html          page shell, header, footer, script tags
+app.css             all styling, including the dark theme
+app.js              router, number formatting, form fields, the SVG chart renderer
+tools/motor.js      brushless motor simulation
+tools/brushed.js    brushed motor simulation
+tools/drive.js      speed, torque and gearing
+tools/thermal.js    motor thermal limit
+tools/ldo.js        linear regulator
+tools/buck.js       buck converter
+tools/rc.js         RC / RL time constant
+tools/lc.js         LC resonance and filter
+tools/divider.js    voltage divider
+tools/limit.js      current-limiting resistor
+tools/wire.js       wire gauge and voltage drop
+tools/pack.js       battery pack and runtime
+.nojekyll           tells GitHub Pages to serve the files as-is
 ```
 
 ## How it works
 
-Each tool registers itself with `IB.register({ id, name, tag, blurb, eq, mount })` in `app.js`.
+Each tool registers itself with `IB.register({ id, name, nav, group, tag, blurb, eq, mount })` in `app.js`.
 `mount(root, head)` builds that tool's DOM into the page; navigation is hash-based
 (`#/motor`, `#/wire`, …), so back and forward work and no server rewrites are needed.
 That also means GitHub Pages needs no `404.html` redirect trick — every route is the same file.
 
 To add a tool, copy the shape of `tools/divider.js` (the simplest one), then add a
 `<script src="tools/yourtool.js"></script>` line to `index.html` before the `IB.start()` call.
-The order of those script tags is the order tools appear in the nav and the index.
+The order of those script tags is the order tools appear in the nav; the index groups them by the `group` field, in the order listed in `GROUP_ORDER` near the bottom of `app.js`.
 
 Shared helpers available to a tool:
 

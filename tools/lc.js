@@ -3,6 +3,7 @@ IB.register({
   id: "lc",
   name: "LC Resonance & Filter",
   nav: "Resonance",
+  group: "Circuits",
   tag: "Second order · frequency response",
   blurb: "Set L, C and the series resistance and read the resonant frequency, characteristic impedance, "
        + "Q and bandwidth — with the response curve for whichever node you tap.",

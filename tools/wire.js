@@ -3,6 +3,7 @@ IB.register({
   id: "wire",
   name: "Wire Gauge & Drop",
   nav: "Wire",
+  group: "Wiring and batteries",
   tag: "Conductors · losses",
   blurb: "Pick a gauge and a run length and see what the copper actually costs you: resistance, volts "
        + "lost, watts turned into heat, and whether the conductor is anywhere near its sensible limit.",

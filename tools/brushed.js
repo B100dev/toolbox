@@ -3,6 +3,7 @@ IB.register({
   id: "brushed",
   name: "Brushed Motor Bench",
   nav: "Brushed bench",
+  group: "Motors and drives",
   live: true,
   tag: "Permanent magnet · mechanical commutation",
   blurb: "The same machine with the switching done by carbon on copper. Watch the commutator reverse the "

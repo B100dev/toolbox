@@ -3,6 +3,7 @@ IB.register({
   id: "rc",
   name: "RC / RL Time Constant",
   nav: "Time constant",
+  group: "Circuits",
   tag: "First order · step response",
   blurb: "One resistor, one storage element, one exponential. Read off τ, the rise and settling "
        + "times, the corner frequency, and how far along the curve you are at any instant.",

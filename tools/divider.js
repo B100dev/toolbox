@@ -3,6 +3,7 @@ IB.register({
   id: "divider",
   name: "Voltage Divider",
   nav: "Divider",
+  group: "Circuits",
   tag: "DC · resistors",
   blurb: "Two resistors and a tap. Solve for the output, see how much the load pulls it down, and get "
        + "the nearest standard-value pair that hits your target.",

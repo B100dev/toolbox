@@ -407,44 +407,55 @@ window.IB = (function () {
   }
 
   /* ---------------- hub ---------------- */
+  var GROUP_ORDER = ["Motors and drives", "Power conversion", "Circuits", "Wiring and batteries"];
+
   function hub(main) {
     var w = el("div", { class: "wrap" });
     main.appendChild(w);
     w.appendChild(el("p", { class: "lede", text:
-      "Small, exact tools for the arithmetic between a schematic and a working build: time constants, "
-      + "resonance, copper losses, pack sag, divider values, and two motor simulations you can watch "
-      + "turn. Every page states its formulas and what it leaves out." }));
-    w.appendChild(el("div", { class: "sechead" }, [
-      el("h2", { text: "Tools" }),
-      el("div", { class: "rule" }),
-      el("span", { class: "count", text: tools.length })
-    ]));
+      "Small, exact tools for the arithmetic between a schematic and a working build: motor sizing and "
+      + "heating, regulators and converters, time constants, resonance, copper losses, pack sag and "
+      + "divider values \u2014 plus two motor simulations you can watch turn. Every page states its "
+      + "formulas and what it leaves out." }));
 
-    var idx = el("div", { class: "index" });
+    var groups = {};
     tools.forEach(function (t) {
-      idx.appendChild(el("a", { class: "card", href: "#/" + t.id }, [
-        el("div", { class: "top" }, [
-          glyph(t.id),
-          el("div", {}, [el("span", { class: "tag", text: t.tag }), el("h3", { text: t.name })])
-        ]),
-        el("p", { text: t.blurb }),
-        el("div", { class: "go", text: (t.live ? "Run the simulation \u2192" : "Open \u2192") }),
-        el("div", { class: "eq", text: t.eq })
-      ]));
+      var g = t.group || "Other";
+      (groups[g] = groups[g] || []).push(t);
     });
-    idx.appendChild(el("div", { class: "card wide" }, [
-      el("div", { class: "top" }, [
-        el("div", {}, [
-          el("span", { class: "tag", text: "Conventions" }),
-          el("h3", { text: "How to read these" })
-        ])
-      ]),
-      el("p", { text: "Inputs accept engineering notation \u2014 1e-7 for 100 nF, 4.7e3 for 4k7. Sliders are "
-        + "logarithmic where the quantity spans decades. Torque is in mN\u00b7m, angles in degrees, "
-        + "everything else SI." }),
-      el("div", { class: "eq", text: "each tool ends with its method and its omissions" })
+    var names = GROUP_ORDER.filter(function (g) { return groups[g]; })
+      .concat(Object.keys(groups).filter(function (g) { return GROUP_ORDER.indexOf(g) < 0; }));
+
+    names.forEach(function (g, gi) {
+      w.appendChild(el("div", { class: "sechead", style: gi ? "margin-top:26px" : "" }, [
+        el("h2", { text: g }),
+        el("div", { class: "rule" }),
+        el("span", { class: "count", text: groups[g].length })
+      ]));
+      var idx = el("div", { class: "index" });
+      groups[g].forEach(function (t) {
+        idx.appendChild(el("a", { class: "card", href: "#/" + t.id }, [
+          el("div", { class: "top" }, [
+            glyph(t.id),
+            el("div", {}, [el("span", { class: "tag", text: t.tag }), el("h3", { text: t.name })])
+          ]),
+          el("p", { text: t.blurb }),
+          el("div", { class: "go", text: (t.live ? "Run the simulation \u2192" : "Open \u2192") }),
+          el("div", { class: "eq", text: t.eq })
+        ]));
+      });
+      w.appendChild(idx);
+    });
+
+    w.appendChild(el("div", { class: "panel", style: "margin-top:26px" }, [
+      el("span", { class: "eyebrow", text: "Conventions" }),
+      el("p", { class: "note", text:
+        "Inputs accept engineering notation \u2014 1e-7 for 100 nF, 4.7e3 for 4k7. Sliders are "
+        + "logarithmic where the quantity spans decades. Torque is in mN\u00b7m on the motor pages and "
+        + "N\u00b7m where loads are involved; angles are in degrees; everything else is SI. Each tool "
+        + "ends with the formulas it used and, more usefully, the effects it ignores \u2014 read that "
+        + "part before trusting a number." })
     ]));
-    w.appendChild(idx);
   }
 
   // Small schematic fragment per tool — drawn, not iconography.
@@ -472,6 +483,40 @@ window.IB = (function () {
       s.appendChild(svg("rect", { x: 20, y: 14, width: 18, height: 12, rx: 2, fill: "none", stroke: "var(--s1)", "stroke-width": 2 }));
       s.appendChild(svg("rect", { x: 27, y: 2, width: 4, height: 5, fill: "var(--copper)" }));
       s.appendChild(svg("rect", { x: 27, y: 33, width: 4, height: 5, fill: "var(--copper)" }));
+    } else if (id === "drive") {
+      s.appendChild(svg("circle", { cx: 20, cy: 20, r: 10, fill: "none", stroke: "var(--ink-3)", "stroke-width": 1.6 }));
+      s.appendChild(svg("circle", { cx: 41, cy: 20, r: 6, fill: "none", stroke: "var(--s1)", "stroke-width": 1.6 }));
+      [0, 60, 120, 180, 240, 300].forEach(function (a) {
+        var r = a * Math.PI / 180;
+        s.appendChild(p("M" + (20 + 10 * Math.cos(r)) + " " + (20 + 10 * Math.sin(r)) +
+          " L" + (20 + 13.5 * Math.cos(r)) + " " + (20 + 13.5 * Math.sin(r)), "var(--ink-3)", 2));
+      });
+      [30, 90, 150, 210, 270, 330].forEach(function (a) {
+        var r = a * Math.PI / 180;
+        s.appendChild(p("M" + (41 + 6 * Math.cos(r)) + " " + (20 + 6 * Math.sin(r)) +
+          " L" + (41 + 9 * Math.cos(r)) + " " + (20 + 9 * Math.sin(r)), "var(--s1)", 1.8));
+      });
+    } else if (id === "thermal") {
+      s.appendChild(p("M4 34 C16 34 20 14 30 12 C40 10 46 10 54 10", "var(--s2)", 2));
+      s.appendChild(p("M4 10 L54 10", "var(--crit)", 1.4));
+      s.appendChild(p("M4 34 L54 34", "var(--rule)", 1.2));
+    } else if (id === "ldo") {
+      s.appendChild(svg("rect", { x: 16, y: 13, width: 26, height: 16, rx: 2, fill: "none",
+        stroke: "var(--ink-3)", "stroke-width": 1.6 }));
+      s.appendChild(p("M4 21 L16 21 M42 21 L54 21", "var(--ink-3)", 1.6));
+      s.appendChild(p("M22 34 C24 31 26 37 28 34 M32 34 C34 31 36 37 38 34", "var(--s2)", 1.6));
+    } else if (id === "buck") {
+      s.appendChild(p("M4 28 L12 28 L12 12 L24 12 L24 28 L36 28 L36 12 L44 12", "var(--s1)", 1.8));
+      s.appendChild(p("M4 34 L54 34", "var(--rule)", 1.2));
+      s.appendChild(p("M44 20 C48 20 50 24 54 24", "var(--s3)", 1.8));
+    } else if (id === "limit") {
+      s.appendChild(p("M4 20 L14 20", "var(--ink-3)", 1.6));
+      s.appendChild(svg("rect", { x: 14, y: 14, width: 18, height: 12, fill: "none",
+        stroke: "var(--s1)", "stroke-width": 1.8 }));
+      s.appendChild(p("M32 20 L38 20", "var(--ink-3)", 1.6));
+      s.appendChild(p("M38 13 L38 27 L50 20 Z", "var(--s2)", 1.6));
+      s.appendChild(p("M50 13 L50 27", "var(--s2)", 1.8));
+      s.appendChild(p("M52 11 L56 7 M55 15 L59 11", "var(--s2)", 1.2));
     } else if (id === "rc") {
       s.appendChild(p("M4 34 C18 34 20 6 54 6", "var(--s2)", 2));
       s.appendChild(p("M4 34 L54 34", "var(--rule)", 1.2));

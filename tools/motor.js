@@ -3,6 +3,7 @@ IB.register({
   id: "motor",
   name: "Brushless Motor Bench",
   nav: "BLDC bench",
+  group: "Motors and drives",
   live: true,
   tag: "Three-phase · trapezoidal drive",
   blurb: "Six switch states, one rotating field, and a rotor that never quite catches it. Set the supply "
