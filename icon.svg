@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Toolbox">
+  <rect width="64" height="64" rx="13" fill="#2F65A7"/>
+  <!-- handle -->
+  <path d="M23 21 a9 9 0 0 1 18 0" fill="none" stroke="#ffffff" stroke-width="4.2" stroke-linecap="round"/>
+  <!-- box -->
+  <rect x="10" y="21" width="44" height="28" rx="3.5" fill="#ffffff"/>
+  <!-- a switching waveform cut into the lid -->
+  <path d="M17 40 L24 40 L24 30 L32 30 L32 40 L40 40 L40 32 L47 32"
+        fill="none" stroke="#2F65A7" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

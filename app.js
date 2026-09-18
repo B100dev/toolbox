@@ -382,12 +382,12 @@ window.IB = (function () {
       a.classList.toggle("on", a.dataset.id === id);
     });
     var t = byId[id];
-    if (!t) { hub(main); document.title = "Motor and Circuit Tools"; }
+    if (!t) { hub(main); document.title = "Toolbox"; }
     else {
       var host = el("div", { class: "wrap t-" + t.id });
       main.appendChild(host);
       host.appendChild(el("div", { class: "crumbs" }, [
-        el("a", { href: "#/", text: "All tools" }), el("span", { text: "/" }), el("span", { text: t.name })
+        el("a", { href: "#/", text: "Toolbox" }), el("span", { text: "/" }), el("span", { text: t.name })
       ]));
       var head = el("div", { class: "pagehead" }, [
         el("div", {}, [
@@ -401,7 +401,7 @@ window.IB = (function () {
       host.appendChild(body);
       current = t;
       t.mount(body, head);
-      document.title = t.name;
+      document.title = t.name + " \u00b7 Toolbox";
     }
     window.scrollTo(0, 0);
   }

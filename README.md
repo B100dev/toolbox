@@ -1,4 +1,4 @@
-# Motor and circuit tools
+# Toolbox
 
 Twelve small engineering tools on one static page: two live motor simulations and ten calculators.
 No build step, no dependencies, no server — plain HTML, CSS and JavaScript.
@@ -50,6 +50,7 @@ To serve it from a subfolder such as `docs/`, put these files there and pick `/d
 
 ```
 index.html          page shell, header, footer, script tags
+icon.svg            site icon (master); favicon-32.png, apple-touch-icon.png, icon-512.png are renders of it
 app.css             all styling, including the dark theme
 app.js              router, number formatting, form fields, the SVG chart renderer
 tools/motor.js      brushless motor simulation

@@ -99,7 +99,9 @@ svg{display:block;max-width:100%}
 .topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);
   border-bottom:1px solid var(--rule)}
 .topbar .wrap{display:flex;align-items:center;gap:8px 18px;flex-wrap:wrap;padding-block:12px}
-.sitename{font-size:15px;font-weight:600;text-decoration:none;color:var(--ink);margin-right:4px}
+.sitename{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:600;text-decoration:none;
+  color:var(--ink);margin-right:4px;letter-spacing:-.01em}
+.sitename .mark{width:22px;height:22px;flex:none;border-radius:5px}
 .navlinks{display:flex;gap:2px;flex-wrap:wrap;margin-left:auto;align-items:center}
 .navlinks a{font-size:13.5px;text-decoration:none;color:var(--ink-2);padding:5px 9px;
   border:1px solid transparent}
